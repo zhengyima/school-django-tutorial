@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>选课demo</title>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    .fakeimg {
+      height: 200px;
+      background: #aaa;
+    }
+
+    .django_img {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="jumbotron text-center" style="margin-bottom:0">
+    <h1>我们实现一个简单的选课功能</h1>
+    <p>这个页面使用了Bootstrap来布局设计！</p>
+  </div>
+
+
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <h2>关于我</h2>
+        <h5>我的照片:</h5>
+        <div class="fakeimg">
+          <image class="django_img"
+            src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1604143822963&di=5ceb6c718d29e5c68297bb07b16cde05&imgtype=0&src=http%3A%2F%2Fn.sinaimg.cn%2Ftranslate%2Fw1280h720%2F20171204%2Fqa_i-fypikwt6342432.jpg">
+          </image>
+        </div>
+        <p>这里你可以写一些关于自己的介绍</p>
+        <h3>链接</h3>
+        <p>描述文本。</p>
+        <ul class="nav nav-pills nav-stacked">
+          <li class="active"><a href="#">链接 1</a></li>
+          <li><a href="#">链接 2</a></li>
+          <li><a href="#">链接 3</a></li>
+        </ul>
+        <hr class="hidden-sm hidden-md hidden-lg">
+      </div>
+      <div class="col-sm-8">
+        <h2>这是一个记录了所有可选课程的表格</h2>
+        <h5>我们在下边的表格里显示所有课程，通过点击按钮可以选课</h5>
+        <div class="tablediv">
+          <table class="table table-striped">
+            <caption>条纹表格布局</caption>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>课程名</th>
+                <th>课程类别</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for c in courses %}
+              <tr>
+                <td>{{c.cno}}</td>
+                <td>{{c.cname}}</td>
+                <td>{{c.ctype}}</td>
+                <td>
+                  <button type="button" class="btn btn-default btn-xuanke" cno="{{c.cno}}">选课</button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <!-- <p>一些文本..</p>
+        <p>菜鸟教程，学的不仅是技术，更是梦想！！！菜鸟教程，学的不仅是技术，更是梦想！！！菜鸟教程，学的不仅是技术，更是梦想！！！</p> -->
+        <br>
+        <h2>这个表格记录了所有Tom(2020200001)选的课</h2>
+        <div class="tablediv">
+          <table class="table table-striped">
+            <caption>条纹表格布局</caption>
+            <thead>
+              <tr>
+                <th>学号</th>
+                <th>课程ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for sc in courses_tom %}
+              <tr>
+                <td>{{sc.sno}}</td>
+                <td>{{sc.cno}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <!-- <p>一些文本..</p>
+        <p>菜鸟教程，学的不仅是技术，更是梦想！！！菜鸟教程，学的不仅是技术，更是梦想！！！菜鸟教程，学的不仅是技术，更是梦想！！！</p> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="jumbotron text-center" style="margin-bottom:0">
+    <p>底部内容</p>
+  </div>
+
+  <script>
+    // console.log("?")
+    $(".btn-xuanke").click(function(){
+      _cno = $(this).attr("cno")
+      $.ajax({
+        type:"GET",
+        contentType:"application/json;charset=UTF-8",
+        url:"/xuanke",
+        data:{cno:_cno},
+        success:function(result){
+          console.log("success!")
+          console.log(result)
+          alert("选课成功！")
+          setTimeout(function() {
+            location.reload();
+          }, 1 * 2000);
+        },
+        error:function(e){
+          console.log(e.status);
+          console.log(e.responseText);
+        }
+      })
+    })
+  </script>
+</body>
+
+</html>
